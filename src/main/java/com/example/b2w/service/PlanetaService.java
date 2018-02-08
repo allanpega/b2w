@@ -1,8 +1,6 @@
 package com.example.b2w.service;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -17,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.b2w.entity.Planeta;
 import com.example.b2w.entity.Swapi;
+import com.example.b2w.exception.BusinessException;
 import com.example.b2w.repository.PlanetaRepository;
 
 @Service
@@ -28,30 +27,54 @@ public class PlanetaService {
 	public static final String URL_SWAPI = "https://swapi.co/api/";
 	public static final String URL_SEARCH = URL_SWAPI + "planets/?search=";
 
-	public Planeta inserir(String nome, String clima, String terreno) {
+	public Planeta inserir(String nome, String clima, String terreno) throws BusinessException {
+
+		validarInserir(nome);
 		return arquivoRepository.save(new Planeta(nome, clima, terreno));
 	}
 
-	public List<Planeta> buscarTodos() throws MalformedURLException, URISyntaxException {
+	private void validarInserir(String nome) throws BusinessException {
+
+		Planeta planeta = arquivoRepository.buscarPorNome(nome);
+
+		if (null != planeta) {
+			throw new BusinessException("Planeta já existe.");
+		}
+		planeta = obterPlaneta(obterRestTemplate(), nome);
+
+		if (null == planeta) {
+			throw new BusinessException("Planeta inexistente no universo de Star Wars.");
+		}
+	}
+
+	public List<Planeta> buscarTodos() throws BusinessException {
 
 		List<Planeta> listaPlaneta = arquivoRepository.findAll();
+
+		if (listaPlaneta.isEmpty()) {
+			throw new BusinessException("Nenhum planeta encontrado.");
+		}
 		RestTemplate restTemplate = obterRestTemplate();
 
 		for (Planeta planeta : listaPlaneta) {
-			planeta.setQtdeAparicoes(obterQtdeAparicoes(restTemplate, planeta));
+			planeta.setQtdeAparicoes(obterPlaneta(restTemplate, planeta.getName()).getFilms().size());
 		}
 		return listaPlaneta;
 	}
 
-	private Integer obterQtdeAparicoes(RestTemplate restTemplate, Planeta planeta)
-			throws MalformedURLException, URISyntaxException {
-		URL url = new URL(URL_SEARCH + planeta.getName());
-		URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+	private Planeta obterPlaneta(RestTemplate restTemplate, String nome) throws BusinessException {
 
-		ResponseEntity<Swapi> entity = restTemplate.getForEntity(uri, Swapi.class);
+		try {
+			URL url = new URL(URL_SEARCH + nome);
+			URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
 
-		Integer qtdeAparicoes = entity.getBody().getResults().get(0).getFilms().size();
-		return qtdeAparicoes;
+			ResponseEntity<Swapi> entity = restTemplate.getForEntity(uri, Swapi.class);
+			List<Planeta> listaPlaneta = entity.getBody().getResults();
+
+			return listaPlaneta.isEmpty() ? null : listaPlaneta.get(0);
+		} catch (Exception e) {
+			throw new BusinessException("Erro ao criar a URL do swapi.co!");
+		}
 	}
 
 	public RestTemplate obterRestTemplate() {
@@ -64,31 +87,43 @@ public class PlanetaService {
 		return restTemplate;
 	}
 
-	public long count() {
-		return arquivoRepository.count();
-	}
-
-	public Planeta buscarPorIdSemIntegracao(String id) {
-		return arquivoRepository.findOne(id);
-	}
-
-	public Planeta buscarPorId(String id) throws MalformedURLException, URISyntaxException {
-
-		RestTemplate restTemplate = obterRestTemplate();
+	public Planeta buscarPorId(String id) throws BusinessException {
 
 		Planeta planeta = arquivoRepository.findOne(id);
-
-		planeta.setQtdeAparicoes(obterQtdeAparicoes(restTemplate, planeta));
+		if (null == planeta) {
+			throw new BusinessException("Planeta não encontrado.");
+		}
+		planeta.setQtdeAparicoes(obterPlaneta(obterRestTemplate(), planeta.getName()).getFilms().size());
 
 		return arquivoRepository.findOne(id);
 	}
 
-	public Planeta buscarPorNome(String nome) {
-		return arquivoRepository.buscarPorNome(nome);
+	public Planeta buscarPorNome(String nome) throws BusinessException {
+
+		Planeta planeta = arquivoRepository.buscarPorNome(nome);
+
+		if (null == planeta) {
+			throw new BusinessException("Planeta não encontrado.");
+		}
+		return planeta;
 	}
 
-	public void delete(String id) {
-		arquivoRepository.delete(id);
+	public void remover(String id) throws BusinessException {
+
+		Planeta planeta = validarRemover(id);
+		arquivoRepository.delete(planeta.getId());
+	}
+
+	private Planeta validarRemover(String id) throws BusinessException {
+		
+		Planeta planeta = arquivoRepository.findOne(id);		
+		if (null == planeta) {
+			planeta = arquivoRepository.buscarPorNome(id);
+			if (null == planeta) {
+				throw new BusinessException("Planeta não encontrado.");
+			}
+		}
+		return planeta;
 	}
 
 }

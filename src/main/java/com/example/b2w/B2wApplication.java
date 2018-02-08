@@ -20,9 +20,9 @@ public class B2wApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		arquivoService.inserir("Alderaan", "temperate", "grasslands, mountains");
-		arquivoService.inserir("Yavin IV", "temperate, tropical", "jungle, rainforests");
-		arquivoService.inserir("Hoth", "frozen", "tundra, ice caves, mountain ranges");		
+//		arquivoService.inserir("Alderaan", "temperate", "grasslands, mountains");
+//		arquivoService.inserir("Yavin IV", "temperate, tropical", "jungle, rainforests");
+//		arquivoService.inserir("Hoth", "frozen", "tundra, ice caves, mountain ranges");		
 	}
 	
 }

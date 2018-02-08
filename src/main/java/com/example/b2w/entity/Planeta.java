@@ -16,7 +16,6 @@ public class Planeta {
 
 	private String name;
 	private String climate;
-
 	private String terrain;
 
 	private List<String> films = null;
