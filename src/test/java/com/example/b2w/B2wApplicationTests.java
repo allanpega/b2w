@@ -1,6 +1,7 @@
 package com.example.b2w;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.net.URL;
@@ -39,18 +40,18 @@ public class B2wApplicationTests {
 
 			assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		} catch (Exception e) {
-			assertThat(false);
+			assertTrue(false);
 		}
 	}
 
 	@Test
 	public void testInserirPlanetaSucesso() {
 		try {
-			Planeta planeta = planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
+			Planeta planeta = planetaService.inserir("Dagobah", "temperate", "grasslands, mountains");
 			assertThat(null != planeta.getId());
 		} catch (BusinessException e) {
+			assertTrue(false);
 		}
-		assertThat(false);
 	}
 
 	@Test
@@ -59,10 +60,11 @@ public class B2wApplicationTests {
 			planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
 			planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
 		} catch (PlanetaDuplicadoException e) {
-			assertThat(true);
+			assertTrue(true);
+			return;
 		} catch (BusinessException e) {
 		}
-		assertThat(false);
+		assertTrue(false);
 	}
 
 	@Test
@@ -70,10 +72,11 @@ public class B2wApplicationTests {
 		try {
 			planetaService.inserir("AlderaanXXX", "temperate", "grasslands, mountains");
 		} catch (PlanetaInexistenteException e) {
-			assertThat(true);
+			assertTrue(true);
+			return;
 		} catch (BusinessException e) {
 		}
-		assertThat(false);
+		assertTrue(false);
 	}
 
 	@Test
@@ -81,10 +84,11 @@ public class B2wApplicationTests {
 		try {
 			planetaService.inserir("", "temperate", "grasslands, mountains");
 		} catch (PlanetaInexistenteException e) {
-			assertThat(true);
+			assertTrue(true);
+			return;
 		} catch (BusinessException e) {
+			assertTrue(false);
 		}
-		assertThat(false);
 	}
 
 	@Test
@@ -92,10 +96,9 @@ public class B2wApplicationTests {
 		try {
 			Planeta planeta = planetaService.inserir("Bespin", "temperate", "grasslands, mountains");
 			planetaService.remover(planeta.getId());
-			assertThat(true);
 		} catch (BusinessException e) {
+			assertTrue(false);
 		}
-		assertThat(false);
 	}
 
 	@Test
@@ -105,8 +108,8 @@ public class B2wApplicationTests {
 			planeta = planetaService.buscarPorNome("Coruscant");
 			assertThat(null != planeta.getId());
 		} catch (BusinessException e) {
+			assertTrue(false);
 		}
-		assertThat(false);
 	}
 
 }

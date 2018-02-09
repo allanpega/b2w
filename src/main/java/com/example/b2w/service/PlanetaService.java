@@ -44,6 +44,9 @@ public class PlanetaService {
 
 	private void validarInserir(String nome) throws BusinessException {
 
+		if ("".equals(nome)) {
+			throw new PlanetaInexistenteException();
+		}
 		Planeta planeta = arquivoRepository.buscarPorNome(nome);
 
 		if (null != planeta) {
