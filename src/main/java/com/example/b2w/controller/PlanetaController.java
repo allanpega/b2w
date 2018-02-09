@@ -14,6 +14,11 @@ import com.example.b2w.entity.Planeta;
 import com.example.b2w.exception.BusinessException;
 import com.example.b2w.service.PlanetaService;
 
+/**
+ * 
+ * @author allan garcia
+ *
+ */
 @RestController
 @RequestMapping("/planeta/")
 public class PlanetaController {

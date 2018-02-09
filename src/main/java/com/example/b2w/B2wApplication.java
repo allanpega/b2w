@@ -7,6 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.b2w.service.PlanetaService;
 
+/**
+ * 
+ * @author allan garcia
+ *
+ */
 @SpringBootApplication
 public class B2wApplication implements CommandLineRunner {
 
@@ -20,9 +25,14 @@ public class B2wApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//		arquivoService.inserir("Alderaan", "temperate", "grasslands, mountains");
-//		arquivoService.inserir("Yavin IV", "temperate, tropical", "jungle, rainforests");
-//		arquivoService.inserir("Hoth", "frozen", "tundra, ice caves, mountain ranges");		
+		arquivoService.inserir("Alderaan", "temperate", "grasslands, mountains");
+		arquivoService.inserir("Yavin IV", "temperate, tropical", "jungle, rainforests");
+		arquivoService.inserir("Geonosis", "frozen", "tundra, ice caves, mountain ranges");
+		arquivoService.inserir("Coruscant", "temperate", "cityscape, mountains");
+		arquivoService.inserir("Naboo", "temperate", "grassy hills, swamps, forests, mountains");
+		arquivoService.inserir("Hoth", "frozen", "tundra, ice caves, mountain ranges");
+		arquivoService.inserir("Bespin", "temperate", "gas giant");
+		arquivoService.inserir("Endor", "frozen", "forests, mountains, lakes");
 	}
 	
 }

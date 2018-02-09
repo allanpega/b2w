@@ -2,5 +2,6 @@ com\example\b2w\B2wApplication.class
 com\example\b2w\controller\PlanetaController.class
 com\example\b2w\entity\Planeta.class
 com\example\b2w\repository\PlanetaRepository.class
+com\example\b2w\exception\BusinessException.class
 com\example\b2w\entity\Swapi.class
 com\example\b2w\service\PlanetaService.class

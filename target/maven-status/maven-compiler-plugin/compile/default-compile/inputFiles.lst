@@ -2,5 +2,6 @@ C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\service\Plane
 C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\repository\PlanetaRepository.java
 C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\entity\Swapi.java
 C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\B2wApplication.java
+C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\exception\BusinessException.java
 C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\controller\PlanetaController.java
 C:\Users\allan\eclipse-workspace\b2w\src\main\java\com\example\b2w\entity\Planeta.java

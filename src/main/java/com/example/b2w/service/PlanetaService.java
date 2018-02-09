@@ -18,6 +18,11 @@ import com.example.b2w.entity.Swapi;
 import com.example.b2w.exception.BusinessException;
 import com.example.b2w.repository.PlanetaRepository;
 
+/**
+ * 
+ * @author allan garcia
+ *
+ */
 @Service
 public class PlanetaService {
 
@@ -95,7 +100,7 @@ public class PlanetaService {
 		}
 		planeta.setQtdeAparicoes(obterPlaneta(obterRestTemplate(), planeta.getName()).getFilms().size());
 
-		return arquivoRepository.findOne(id);
+		return planeta;
 	}
 
 	public Planeta buscarPorNome(String nome) throws BusinessException {
@@ -105,6 +110,8 @@ public class PlanetaService {
 		if (null == planeta) {
 			throw new BusinessException("Planeta não encontrado.");
 		}
+		planeta.setQtdeAparicoes(obterPlaneta(obterRestTemplate(), planeta.getName()).getFilms().size());
+		
 		return planeta;
 	}
 
@@ -115,8 +122,8 @@ public class PlanetaService {
 	}
 
 	private Planeta validarRemover(String id) throws BusinessException {
-		
-		Planeta planeta = arquivoRepository.findOne(id);		
+
+		Planeta planeta = arquivoRepository.findOne(id);
 		if (null == planeta) {
 			planeta = arquivoRepository.buscarPorNome(id);
 			if (null == planeta) {

@@ -1,8 +1,6 @@
 package com.example.b2w.entity;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.springframework.data.annotation.Id;
@@ -22,16 +20,6 @@ public class Planeta {
 
 	private Integer qtdeAparicoes;
 
-	public Integer getQtdeAparicoes() {
-		return qtdeAparicoes;
-	}
-
-	public void setQtdeAparicoes(Integer qtdeAparicoes) {
-		this.qtdeAparicoes = qtdeAparicoes;
-	}
-
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
 	public Planeta() {
 
 	}
@@ -41,6 +29,14 @@ public class Planeta {
 		this.name = name;
 		this.climate = climate;
 		this.terrain = terrain;
+	}
+
+	public Integer getQtdeAparicoes() {
+		return qtdeAparicoes;
+	}
+
+	public void setQtdeAparicoes(Integer qtdeAparicoes) {
+		this.qtdeAparicoes = qtdeAparicoes;
 	}
 
 	public String getName() {
@@ -73,14 +69,6 @@ public class Planeta {
 
 	public void setFilms(List<String> films) {
 		this.films = films;
-	}
-
-	public Map<String, Object> getAdditionalProperties() {
-		return additionalProperties;
-	}
-
-	public void setAdditionalProperties(Map<String, Object> additionalProperties) {
-		this.additionalProperties = additionalProperties;
 	}
 
 	public String getId() {
