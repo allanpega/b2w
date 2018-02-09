@@ -80,6 +80,17 @@ public class B2wApplicationTests {
 	}
 
 	@Test
+	public void testBuscarTodosPlanetasSucesso() {
+		try {
+			planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
+
+			assertTrue(!planetaService.buscarTodos().isEmpty());
+		} catch (BusinessException e) {
+			assertTrue(false);
+		}
+	}
+
+	@Test
 	public void testInserirPlanetaVazio() {
 		try {
 			planetaService.inserir("", "temperate", "grasslands, mountains");
@@ -99,6 +110,17 @@ public class B2wApplicationTests {
 		} catch (BusinessException e) {
 			assertTrue(false);
 		}
+	}
+
+	@Test
+	public void testRemoverPlanetaVazio() {
+		try {
+			planetaService.remover("");
+		} catch (BusinessException e) {
+			assertTrue(true);
+			return;
+		}
+		assertTrue(true);
 	}
 
 	@Test
