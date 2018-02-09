@@ -14,7 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.b2w.entity.Planeta;
 import com.example.b2w.entity.Swapi;
+import com.example.b2w.exception.BusinessException;
+import com.example.b2w.exception.PlanetaDuplicadoException;
+import com.example.b2w.exception.PlanetaInexistenteException;
 import com.example.b2w.service.PlanetaService;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +41,72 @@ public class B2wApplicationTests {
 		} catch (Exception e) {
 			assertThat(false);
 		}
+	}
 
+	@Test
+	public void testInserirPlanetaSucesso() {
+		try {
+			Planeta planeta = planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
+			assertThat(null != planeta.getId());
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
+	}
+
+	@Test
+	public void testInserirPlanetaDuplicado() {
+		try {
+			planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
+			planetaService.inserir("Alderaan", "temperate", "grasslands, mountains");
+		} catch (PlanetaDuplicadoException e) {
+			assertThat(true);
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
+	}
+
+	@Test
+	public void testInserirPlanetaInexistente() {
+		try {
+			planetaService.inserir("AlderaanXXX", "temperate", "grasslands, mountains");
+		} catch (PlanetaInexistenteException e) {
+			assertThat(true);
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
+	}
+
+	@Test
+	public void testInserirPlanetaVazio() {
+		try {
+			planetaService.inserir("", "temperate", "grasslands, mountains");
+		} catch (PlanetaInexistenteException e) {
+			assertThat(true);
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
+	}
+
+	@Test
+	public void testRemoverPlanetaSucesso() {
+		try {
+			Planeta planeta = planetaService.inserir("Bespin", "temperate", "grasslands, mountains");
+			planetaService.remover(planeta.getId());
+			assertThat(true);
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
+	}
+
+	@Test
+	public void testPesquisaPorNomeSucesso() {
+		try {
+			Planeta planeta = planetaService.inserir("Coruscant", "temperate", "cityscape, mountains");
+			planeta = planetaService.buscarPorNome("Coruscant");
+			assertThat(null != planeta.getId());
+		} catch (BusinessException e) {
+		}
+		assertThat(false);
 	}
 
 }

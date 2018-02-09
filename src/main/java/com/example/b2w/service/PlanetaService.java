@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 import com.example.b2w.entity.Planeta;
 import com.example.b2w.entity.Swapi;
 import com.example.b2w.exception.BusinessException;
+import com.example.b2w.exception.PlanetaDuplicadoException;
+import com.example.b2w.exception.PlanetaInexistenteException;
 import com.example.b2w.repository.PlanetaRepository;
 
 /**
@@ -28,6 +30,8 @@ public class PlanetaService {
 
 	@Autowired
 	private PlanetaRepository arquivoRepository;
+
+	public static final String MSG_PLANETA_INE = "Planeta inexistente ";
 
 	public static final String URL_SWAPI = "https://swapi.co/api/";
 	public static final String URL_SEARCH = URL_SWAPI + "planets/?search=";
@@ -43,12 +47,12 @@ public class PlanetaService {
 		Planeta planeta = arquivoRepository.buscarPorNome(nome);
 
 		if (null != planeta) {
-			throw new BusinessException("Planeta já existe.");
+			throw new PlanetaDuplicadoException();
 		}
 		planeta = obterPlaneta(obterRestTemplate(), nome);
 
 		if (null == planeta) {
-			throw new BusinessException("Planeta inexistente no universo de Star Wars.");
+			throw new PlanetaInexistenteException();
 		}
 	}
 
@@ -111,7 +115,7 @@ public class PlanetaService {
 			throw new BusinessException("Planeta não encontrado.");
 		}
 		planeta.setQtdeAparicoes(obterPlaneta(obterRestTemplate(), planeta.getName()).getFilms().size());
-		
+
 		return planeta;
 	}
 
